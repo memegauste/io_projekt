@@ -7,32 +7,47 @@ from taxi.models import Dyspozytor, Kierowca, Klient, Usluga
 
 
 @admin.register(Klient)
-class KlientAdmin(admin.ModelAdmin):
+class KlientAdmin(admin.ModelAdmin):  # noqa: D101
 
     list_display = [
-        '__all__',
+        'idKlienta',
+        'imieKlienta',
+        'nrTelefonu',
+        'dlugoscGeoKlienta',
+        'szerokoscGeoKlienta',
     ]
 
 
 @admin.register(Dyspozytor)
-class DyspozytorAdmin(admin.ModelAdmin):
+class DyspozytorAdmin(admin.ModelAdmin):  # noqa: D101
 
     list_display = [
-        '__all__',
+        'idDyspozytora',
+        'imieDyspozytora',
+        'nazwiskoDyspozytora',
     ]
 
 
 @admin.register(Kierowca)
-class KierowcaAdmin(admin.ModelAdmin):
+class KierowcaAdmin(admin.ModelAdmin):  # noqa: D101
 
     list_display = [
-        '__all__',
+        'idKierowcy',
+        'imieKierowcy',
+        'nazwiskoKierowcy',
+        'dlugoscGeoKierowcy',
+        'szerokoscGeoKierowcy',
     ]
 
 
 @admin.register(Usluga)
-class UslugaAdmin(admin.ModelAdmin):
+class UslugaAdmin(admin.ModelAdmin):  # noqa: D101
 
     list_display = [
-        '__all__',
+        'idUsluga',
+        'idDyspozytora',
+        'idKierowcy',
+        'idKlienta',
+        'dlugoscGeoCelu',
+        'szerokoscGeoCelu',
     ]

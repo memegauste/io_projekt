@@ -2,8 +2,7 @@
 from django.db import models
 
 
-class Klient(models.Model):
-    """Model klienta."""
+class Klient(models.Model):  # noqa: D101
 
     idKlienta = models.IntegerField(primary_key=True)
     imieKlienta = models.CharField(max_length=50)
@@ -11,23 +10,21 @@ class Klient(models.Model):
     dlugoscGeoKlienta = models.FloatField()
     szerokoscGeoKlienta = models.FloatField()
 
-    def __str__(self):
+    def __str__(self):  # noqa: D105
         return f'{self.imieKlienta}'
 
 
-class Dyspozytor(models.Model):
-    """Model dyspozytora."""
+class Dyspozytor(models.Model):  # noqa: D101
 
-    idDyspozytra = models.IntegerField(primary_key=True)
+    idDyspozytora = models.IntegerField(primary_key=True)
     imieDyspozytora = models.CharField(max_length=50)
     nazwiskoDyspozytora = models.CharField(max_length=50)
 
-    def __str__(self):  # noqa: D106
+    def __str__(self):  # noqa: D105
         return f'{self.imieDyspozytora} {self.nazwiskoDyspozytora}'
 
 
-class Kierowca(models.Model):
-    """Model kierowcy."""
+class Kierowca(models.Model):  # noqa: D101
 
     idKierowcy = models.IntegerField(primary_key=True)
     imieKierowcy = models.CharField(max_length=50)
@@ -35,11 +32,11 @@ class Kierowca(models.Model):
     dlugoscGeoKierowcy = models.FloatField()
     szerokoscGeoKierowcy = models.FloatField()
 
-    def __str__(self):  # noqa: D106
+    def __str__(self):  # noqa: D105
         return f'{self.imieKierowcy} {self.nazwiskoKierowcy}'
 
 
-class Usluga(models.Model):
+class Usluga(models.Model):  # noqa: D101
 
     idUsluga = models.IntegerField(primary_key=True)
     idDyspozytora = models.IntegerField()
@@ -48,5 +45,5 @@ class Usluga(models.Model):
     dlugoscGeoCelu = models.FloatField()
     szerokoscGeoCelu = models.FloatField()
 
-    def __str__(self):  # noqa: D106
+    def __str__(self):  # noqa: D105
         return f'Usługa o id {self.idUsluga}'
