@@ -1,0 +1,10 @@
+.idea
+db.sqlite3
+project/settings_local.py
+media/
+.uwsgi.pid
+__pycache__
+ftp/
+apps_static/
+imports/
+logs/
