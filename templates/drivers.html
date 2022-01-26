@@ -1,0 +1,7 @@
+{% if drivers %}
+{% for driver in drivers %}
+    {{ driver }}
+{% endfor %}
+{% else %}
+    <h5>Brak kierowców...</h5>
+{% endif %}
