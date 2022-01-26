@@ -1,9 +1,0 @@
-.map { height: 100vh;width: 100vw; }
-.orderList {
-   z-index: 999;
-   position:absolute ;
-   top: 0;
-   left: 80vw;
-   height: 100vh;
-   width: 20vw;
- }
