@@ -15,20 +15,26 @@
     <script src="{% static 'js/leaflet.js' %}"></script>
     <script type="text/javascript">
         let map = undefined;
+        let firstRun = true;
 
         const addMarker = (pos, text) => {
             let staticIcon = new L.Icon({
                 iconUrl: '{% static "images/marker-icon.png" %}',
             })
 
-            L.marker(pos, {icon: staticIcon}).addTo(map)
-                .bindPopup(text).openPopup();
+            let marker = L.marker(pos, {icon: staticIcon}).addTo(map);
+            if(typeof text !== 'undefined') marker.bindPopup(text).openPopup()
         }
 
         const setPosition = (position) => {
             let latLong = [position.coords.latitude, position.coords.longitude];
             map.setView(latLong, 13);
-            addMarker(latLong, 'Jesteś tutaj')
+            if(firstRun){
+                addMarker(latLong, 'Jesteś tutaj');
+                firstRun = false;
+            }
+            else addMarker(latLong)
+            setTimeout(() => getPosition(), 2500);
         }
 
         const getPosition = (position) => {
