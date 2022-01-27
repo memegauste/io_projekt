@@ -9,9 +9,11 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import FormView
 from django.views.generic import TemplateView
-from mobile.views import state_dict
+
+from mobile.utils import state_dict
 from taxi.forms import ClientInputForm
-from taxi.models import Kierowca, Usluga
+from taxi.models import Kierowca
+from taxi.models import Usluga
 
 
 class DyspozytorView(FormView):  # noqa: D101
@@ -43,7 +45,7 @@ def load_drivers(request):
         if value > timezone.now() - timedelta(minutes=5):
             get_drivers.append(key)
     if request.POST['filter'] == 'all':
-        drivers = Kierowca.objects.filter(idKierowcy__in=get_drivers)
+        drivers = Kierowca.objects.all()
     else:
         drivers = Kierowca.objects.filter(
             id__in=get_drivers,

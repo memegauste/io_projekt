@@ -1,5 +1,8 @@
 """Mainapp models file."""
 from django.db import models
+from django.utils.safestring import mark_safe
+
+from mobile.utils import state_dict
 
 
 class Klient(models.Model):  # noqa: D101
@@ -42,6 +45,12 @@ class Kierowca(models.Model):  # noqa: D101
 
     def __str__(self):  # noqa: D105
         return f'{self.imieKierowcy} {self.nazwiskoKierowcy}'
+
+    def get_status(self):
+        html = '<span class="fst-italic {0}">{1}</span>'
+        if self.idKierowcy in state_dict.keys():
+            return mark_safe(html.format('text-success', 'Dostępny'))
+        return mark_safe(html.format('text-danger', 'Niedostępny'))
 
     class Meta:
         verbose_name = 'Kierowca'

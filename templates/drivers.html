@@ -1,6 +1,9 @@
 {% if drivers %}
 {% for driver in drivers %}
-    {{ driver }}
+    <div>
+        {{ driver }}
+        <span class="fst-italic text-secondary">{{ driver.get_status }}</span>
+    </div>
 {% endfor %}
 {% else %}
     <h5>Brak kierowców</h5>
