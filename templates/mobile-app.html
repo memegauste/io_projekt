@@ -17,14 +17,14 @@
     <nav class="navbar navbar-light bg-light">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">Projekt IO</a>
-    <input type="search" placeholder="Określ lokalizację..." aria-label="search">
-      <button class="btn btn-outline-success btn-sm" type="submit">Dalej</button>
+    <input type="search" id="driver-search" placeholder="Określ lokalizację..." aria-label="search">
+      <button id="search-confirm" class="btn btn-outline-success btn-sm" type="submit">Dalej</button>
   </div>
 </nav>
     <div id="map"></div>
     <footer class="footer mt-auto py-3 bg-light">
       <div class="container">
-        <span class="text-muted">Aktualny cel...</span>
+        <span class="text-muted" id="status-span">Brak celu...</span>
       </div>
     </footer>
     <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
@@ -34,6 +34,7 @@
     <script type="text/javascript">
         let map = undefined;
         let firstRun = true;
+        let searchTries = 0;
 
         const addMarker = (pos, text) => {
             let staticIcon = new L.Icon({
@@ -61,6 +62,23 @@
             }
         }
 
+        const searchDriver = () => {
+            $.ajax({
+                type: 'POST',
+                url: '{% url "taxi:load_drivers" %}',
+                data: {'driver': $('#driver-search').val()},
+                success: (response) => {
+                    if(response['is_finished'] || searchTries < 5){
+                        $('#status-span').text(response['status']);
+                        searchTries = 0;
+                    } else {
+                        setTimeout(() => searchDriver(), 2000);
+                        searchTries += 1;
+                    }
+                },
+            })
+        }
+
         $(document).ready(() => {
             let defaultPos = [53.770, 20.490] // default position for Olsztyn city.
             map = L.map('map').setView(defaultPos, 13);
@@ -69,6 +87,18 @@
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
+
+            $('#search-confirm').on('click', (e) => {
+                $('#status-span').text('Szukanie dla podanej lokalizacji...');
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "taxi:load_drivers" %}',
+                    data: {'driver': $('#driver-search').val()},
+                    success: (response) => {
+                        $('#status-span').text(response['status']);
+                    },
+                })
+            });
         });
     </script>
 </body>

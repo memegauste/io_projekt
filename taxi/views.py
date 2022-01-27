@@ -35,6 +35,12 @@ class RobotsView(TemplateView):  # noqa: D101
 
 @csrf_exempt
 def load_drivers(request):
+    if request.POST['filter'] == 'all':
+        drivers = Kierowca.objects.all()
+    else:
+        drivers = Kierowca.objects.filter(
+            usluga__in=Usluga.objects.all(),
+        )
     template = 'drivers.html'
     body = render_to_string(
         template,

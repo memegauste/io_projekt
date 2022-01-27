@@ -38,10 +38,27 @@ class Kierowca(models.Model):  # noqa: D101
 
 class Usluga(models.Model):  # noqa: D101
 
+    ROZPOCZETO = 1
+    W_TRAKCIE = 2
+    ZAKONCZONO = 3
+
+    STATUSY_REALIZACJI = (
+        (ROZPOCZETO, 'Rozpoczęto'),
+        (W_TRAKCIE, 'W trakcie'),
+        (ZAKONCZONO, 'Zakończono'),
+    )
+    statusRealizacji = models.IntegerField(choices=STATUSY_REALIZACJI)
     idUsluga = models.IntegerField(primary_key=True)
     idDyspozytora = models.IntegerField()
-    idKierowcy = models.ForeignKey(Kierowca, on_delete=models.CASCADE)
-    idKlienta = models.ForeignKey(Klient, on_delete=models.CASCADE)
+    idKierowcy = models.ForeignKey(
+        Kierowca,
+        on_delete=models.CASCADE,
+        null=True, blank=True,
+    )
+    idKlienta = models.ForeignKey(
+        Klient,
+        on_delete=models.CASCADE,
+    )
     dlugoscGeoCelu = models.FloatField()
     szerokoscGeoCelu = models.FloatField()
 
