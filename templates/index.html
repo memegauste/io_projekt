@@ -73,13 +73,20 @@
     $(document).ready(() => {
         let map = L.map('map').setView([53.770, 20.490], 13);
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-
         let staticIcon = new L.Icon({
             iconUrl: '{% static "images/marker-icon.png" %}',
         })
+
+        map.on('click', (e) => {
+            map.eachLayer((layer) => {
+                if(layer.options.hasOwnProperty('icon')) map.removeLayer(layer);
+            });
+            let market = new L.marker(e.latlng, {icon: staticIcon}).addTo(map);
+        })
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
 
         L.marker([53.770, 20.490], {icon: staticIcon}).addTo(map)
             .bindPopup('Tutaj jesteś.').openPopup();
@@ -121,15 +128,6 @@
                 })
             } else e.currentTarget.reportValidity();
         })
-
-        {#L.Routing.control({#}
-        {#    waypoints: [#}
-        {#        L.latLng(53.770, 20.490),#}
-        {#        L.latLng(53.770, 20.490),#}
-        {#    ],#}
-        {#    routeWhileDragging: true,#}
-        {#    geocoder: L.Control.Geocoder.nominatim()#}
-        {#}).addTo(map);#}
 
         $('#cleanForm').on('click', () => {
             $('#mainForm')[0].reset()
