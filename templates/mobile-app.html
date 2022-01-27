@@ -6,9 +6,27 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'css/leaflet.css' %}">
     <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <style>
+        #map{
+            width: 100%;
+            height: calc(100% - 112px)
+        }
+    </style>
 </head>
 <body class="text-white bg-dark">
+    <nav class="navbar navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Projekt IO</a>
+    <input type="search" placeholder="Określ lokalizację..." aria-label="search">
+      <button class="btn btn-outline-success btn-sm" type="submit">Dalej</button>
+  </div>
+</nav>
     <div id="map"></div>
+    <footer class="footer mt-auto py-3 bg-light">
+      <div class="container">
+        <span class="text-muted">Aktualny cel...</span>
+      </div>
+    </footer>
     <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
     <script src="{% static 'js/jquery-3.6.0.js' %}"></script>
     <script src="{% static 'js/js.cookie.js' %}"></script>
