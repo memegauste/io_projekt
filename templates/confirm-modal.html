@@ -1,0 +1,20 @@
+ <div class="modal-dialog" role="document">
+        <form id="taxiForm" action="{% url 'taxi:index' %}">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Nowe zlecenie</h4>
+                </div>
+                <div class="modal-body">
+                    {{ form.as_p }}
+                </div>
+                <div class="modal-footer">
+                    <!--            <button class="btn btn-outline-secondary btn-sm" type="button" data-dismiss="modal">-->
+                    <!--              Zamknij-->
+                    <!--            </button>-->
+                    <button class="btn btn-outline-secondary btn-sm" type="submit" data-dismiss="modal">
+                        Zatwierdź
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>

@@ -70,7 +70,6 @@
             .bindPopup(text).openPopup();
     }
 
-
     $(document).ready(() => {
         let map = L.map('map').setView([53.770, 20.490], 13);
 
@@ -83,13 +82,12 @@
         })
 
         L.marker([53.770, 20.490], {icon: staticIcon}).addTo(map)
-            .bindPopup('Fajny popup.')
-            .openPopup();
+            .bindPopup('Tutaj jesteś.').openPopup();
 
         const checkDrivers = () => {
             $.ajax({
                 type: 'POST',
-                url: {% url 'taxi:load_drivers' %},
+                url: '{% url "taxi:load_drivers" %}',
                 data: {},
                 success: (response) => {
                     if(response['is_finished']) $('#drivers-list').html(response['html']);
