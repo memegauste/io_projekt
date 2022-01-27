@@ -1,14 +1,17 @@
 """Taxi views file."""
 
 # Create your views here.
+from datetime import timedelta
+
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import FormView
 from django.views.generic import TemplateView
-
+from mobile.views import state_dict
 from taxi.forms import ClientInputForm
-from taxi.models import Kierowca
+from taxi.models import Kierowca, Usluga
 
 
 class DyspozytorView(FormView):  # noqa: D101
@@ -35,16 +38,20 @@ class RobotsView(TemplateView):  # noqa: D101
 
 @csrf_exempt
 def load_drivers(request):
+    get_drivers = []
+    for key, value in state_dict.items():
+        if value > timezone.now() - timedelta(minutes=5):
+            get_drivers.append(key)
     if request.POST['filter'] == 'all':
-        drivers = Kierowca.objects.all()
+        drivers = Kierowca.objects.filter(idKierowcy__in=get_drivers)
     else:
         drivers = Kierowca.objects.filter(
-            usluga__in=Usluga.objects.all(),
-        )
+            id__in=get_drivers,
+        ).exclude(usluga__in=Usluga.objects.filter(statusRealizacji__in=[Usluga.ROZPOCZETO, Usluga.W_TRAKCIE]))
     template = 'drivers.html'
     body = render_to_string(
         template,
-        {'drivers': Kierowca.objects.all()},
+        {'drivers': drivers},
     )
     return JsonResponse({
         'is_finished': True,

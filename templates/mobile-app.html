@@ -79,6 +79,18 @@
             })
         }
 
+        const sendStatus = () => {
+            $.ajax({
+                type: 'POST',
+                url: '{% url "mobile:add_to_state" %}',
+                data: {'driverId': {{ current_driver }}},
+                success: (response) => {
+                    if(response['is_finished']) setTimeout(() => sendStatus(), 2500);
+                }
+            })
+        }
+        sendStatus()
+
         $(document).ready(() => {
             let defaultPos = [53.770, 20.490] // default position for Olsztyn city.
             map = L.map('map').setView(defaultPos, 13);

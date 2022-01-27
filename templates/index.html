@@ -88,7 +88,7 @@
             $.ajax({
                 type: 'POST',
                 url: '{% url "taxi:load_drivers" %}',
-                data: {},
+                data: {'filter': 'all'},
                 success: (response) => {
                     if(response['is_finished']) $('#drivers-list').html(response['html']);
                     setTimeout(() => checkDrivers(), 2500);
@@ -122,14 +122,14 @@
             } else e.currentTarget.reportValidity();
         })
 
-        L.Routing.control({
-            waypoints: [
-                L.latLng(53.770, 20.490),
-                L.latLng(53.770, 20.490),
-            ],
-            routeWhileDragging: true,
-            geocoder: L.Control.Geocoder.nominatim()
-        }).addTo(map);
+        {#L.Routing.control({#}
+        {#    waypoints: [#}
+        {#        L.latLng(53.770, 20.490),#}
+        {#        L.latLng(53.770, 20.490),#}
+        {#    ],#}
+        {#    routeWhileDragging: true,#}
+        {#    geocoder: L.Control.Geocoder.nominatim()#}
+        {#}).addTo(map);#}
 
         $('#cleanForm').on('click', () => {
             $('#mainForm')[0].reset()

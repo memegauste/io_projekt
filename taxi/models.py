@@ -13,6 +13,10 @@ class Klient(models.Model):  # noqa: D101
     def __str__(self):  # noqa: D105
         return f'{self.imieKlienta}'
 
+    class Meta:
+        verbose_name = 'Klient'
+        verbose_name_plural = 'Klienci'
+
 
 class Dyspozytor(models.Model):  # noqa: D101
 
@@ -22,6 +26,10 @@ class Dyspozytor(models.Model):  # noqa: D101
 
     def __str__(self):  # noqa: D105
         return f'{self.imieDyspozytora} {self.nazwiskoDyspozytora}'
+
+    class Meta:
+        verbose_name = 'Dyspozytor'
+        verbose_name_plural = 'Dyspozytory'
 
 
 class Kierowca(models.Model):  # noqa: D101
@@ -34,6 +42,10 @@ class Kierowca(models.Model):  # noqa: D101
 
     def __str__(self):  # noqa: D105
         return f'{self.imieKierowcy} {self.nazwiskoKierowcy}'
+
+    class Meta:
+        verbose_name = 'Kierowca'
+        verbose_name_plural = 'Kierowcy'
 
 
 class Usluga(models.Model):  # noqa: D101
@@ -64,3 +76,7 @@ class Usluga(models.Model):  # noqa: D101
 
     def __str__(self):  # noqa: D105
         return f'Usługa o id {self.idUsluga}'
+
+    class Meta:
+        verbose_name = 'Usluga'
+        verbose_name_plural = 'Uslugi'
