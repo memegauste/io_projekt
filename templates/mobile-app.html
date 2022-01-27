@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'css/leaflet.css' %}">
+    <link rel="stylesheet" href="{% static 'css/leaflet-routing-machine.css' %}">
     <link rel="stylesheet" href="{% static 'css/custom.css' %}">
     <style>
         #map{
@@ -31,6 +32,7 @@
     <script src="{% static 'js/jquery-3.6.0.js' %}"></script>
     <script src="{% static 'js/js.cookie.js' %}"></script>
     <script src="{% static 'js/leaflet.js' %}"></script>
+    <script src="{% static 'js/leaflet-routing-machine.js' %}"></script>
     <script type="text/javascript">
         let map = undefined;
         let firstRun = true;
@@ -91,9 +93,27 @@
         }
         sendStatus()
 
+        let staticIcon = new L.Icon({
+            iconUrl: '{% static "images/marker-icon.png" %}',
+        })
+
         $(document).ready(() => {
-            let defaultPos = [53.770, 20.490] // default position for Olsztyn city.
+            let defaultPos = [42.770, 20.490] // default position for Olsztyn city.
             map = L.map('map').setView(defaultPos, 13);
+            L.Routing.control({
+              waypoints: [
+                L.latLng(53.77370945103288, 20.477190825235354),
+                L.latLng(53.74444422862744, 20.455743130722073)
+              ],
+              createMarker: function(i, wp, nWps){
+                  if (i === 0 || i === nWps - 1) {
+                      return L.marker(wp.latLng, {icon: staticIcon });
+                  } else {
+                      return L.marker(wp.latLng, {icon: staticIcon });
+                  }
+              }
+            }).addTo(map);
+            $('.leaflet-routing-container').hide();
             getPosition();
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

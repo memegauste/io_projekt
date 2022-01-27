@@ -9,7 +9,7 @@
 </head>
 <body class="text-white bg-dark">
     <div id="top" class="text-end mx-2">
-        <span>Zalogowano jako: testowy użytkownik</span>
+        <span>Zalogowano jako: dyspozytor1</span>
     </div>
     <div class="d-flex text-center" id="main">
         <div id="map">
@@ -81,7 +81,7 @@
             map.eachLayer((layer) => {
                 if(layer.options.hasOwnProperty('icon')) map.removeLayer(layer);
             });
-            let market = new L.marker(e.latlng, {icon: staticIcon}).addTo(map);
+            new L.marker(e.latlng, {icon: staticIcon}).addTo(map);
         })
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
