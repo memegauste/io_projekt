@@ -12,7 +12,11 @@
         <span>Zalogowano jako: testowy użytkownik</span>
     </div>
     <div class="d-flex text-center" id="main">
-        <div id="map"></div>
+        <div id="map">
+            <div id="request-add">
+                Dodaj zgłoszenie
+            </div>
+        </div>
         <div class="p-1 m-3 border border-white w-20" id="driver-div">
             <h1>Lista kierowców</h1>
             <div id="drivers-list">
@@ -20,41 +24,53 @@
             </div>
         </div>
     </div>
-    <div class="p-1 m-3 border border-white w-20" id="bottom-menu">
-        <h3>Menu</h3>
-        <form id="mainForm">
-            {{ form.as_p }}
-        </form>
-        <button id="cleanForm" class="btn btn-light">Wyczyść</button>
-        <button type="submit" class="btn btn-light">Potwierdź</button>
-    </div>
-    <div class="modal fade" id="menuDyspozytora" tabindex="-1" role="dialog">
+<!--    <div class="p-1 m-3 border border-white w-20" id="bottom-menu">-->
+<!--        <h3>Menu</h3>-->
+<!--        <form id="mainForm">-->
+<!--            {{ form.as_p }}-->
+<!--        </form>-->
+<!--        <button id="cleanForm" class="btn btn-light">Wyczyść</button>-->
+<!--        <button type="submit" class="btn btn-light">Potwierdź</button>-->
+<!--    </div>-->
+    <div class="modal fade text-black" id="menuDyspozytora" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
+        <form id="taxiForm" action="{% url 'taxi:index' %}">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title">...</h4>
+            <h4 class="modal-title">Nowe zlecenie</h4>
           </div>
           <div class="modal-body">
-            <form action="{% url 'taxi:index' %}">
-            </form>
+                {{ form.as_p }}
           </div>
           <div class="modal-footer">
-            <button class="btn btn-outline-secondary btn-sm" type="button" data-dismiss="modal">
-              Zamknij
-            </button>
+<!--            <button class="btn btn-outline-secondary btn-sm" type="button" data-dismiss="modal">-->
+<!--              Zamknij-->
+<!--            </button>-->
             <button
                     class="btn btn-outline-secondary btn-sm" type="submit" data-dismiss="modal">
-              Dodaj
+              Zatwierdź
             </button>
           </div>
         </div>
+            </form>
       </div>
         </div>
 
     <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
     <script src="{% static 'js/jquery-3.6.0.js' %}"></script>
+    <script src="{% static 'js/js.cookie.js' %}"></script>
     <script src="{% static 'js/leaflet.js' %}"></script>
   <script>
+   const addMarker = (pos, text) => {
+        let staticIcon = new L.Icon({
+            iconUrl: '{% static "images/marker-icon.png" %}',
+        })
+
+        L.marker(pos, {icon: staticIcon}).addTo(map)
+            .bindPopup(text).openPopup();
+    }
+
+
     $(document).ready(() => {
         let map = L.map('map').setView([53.770, 20.490], 13);
 
@@ -63,7 +79,7 @@
         }).addTo(map);
 
         let staticIcon = new L.Icon({
-            iconUrl: '{% static 'images/marker-icon.png' %}',
+            iconUrl: '{% static "images/marker-icon.png" %}',
         })
 
         L.marker([53.770, 20.490], {icon: staticIcon}).addTo(map)
@@ -83,6 +99,31 @@
         }
         checkDrivers()
 
+        $('#request-add').on('click', () => {
+            $('#menuDyspozytora').modal('show');
+        })
+
+        $('#taxiForm').on('submit', (e) => {
+            e.preventDefault();
+            if(e.currentTarget.checkValidity()) {
+                let formData = new FormData($(e.currentTarget)[0]);
+                console.log(formData)
+                $.ajax({
+                    type: 'POST',
+                    headers: {
+                        'X-CSRFTOKEN': Cookies.get('csrftoken'),
+                    },
+                    url: $(e.currentTarget).attr('action'),
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: (response) => {
+                        console.log(response);
+                    },
+                })
+            } else e.currentTarget.reportValidity();
+        })
+
         L.Routing.control({
             waypoints: [
                 L.latLng(53.770, 20.490),
@@ -95,7 +136,6 @@
         $('#cleanForm').on('click', () => {
             $('#mainForm')[0].reset()
         });
-        {#$('#menuDyspozytora').modal('show');#}
     })
   </script>
 </body>

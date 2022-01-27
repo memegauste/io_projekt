@@ -7,6 +7,7 @@ from django.urls import path
 
 urlpatterns = [
     path('', include('taxi.urls', namespace='taxi')),
+    path('', include('mobile.urls', namespace='mobile')),
     path('admin/', admin.site.urls),
 ]
 

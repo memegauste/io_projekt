@@ -8,7 +8,7 @@
 }
 
 #main{
-    height: 70vh;
+    height: 92vh;
 }
 
 #top{
@@ -17,4 +17,15 @@
 
 #bottom-menu{
     height: 20vh;
+}
+
+#request-add{
+    width: 64px;
+    height: 64px;
+    background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
+    z-index: 99999;
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    padding-top: 12px;
 }

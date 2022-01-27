@@ -11,7 +11,7 @@ from taxi.forms import ClientInputForm
 from taxi.models import Kierowca
 
 
-class IndexView(FormView):  # noqa: D101
+class DyspozytorView(FormView):  # noqa: D101
 
     template_name = 'index.html'
     form_class = ClientInputForm
@@ -20,6 +20,11 @@ class IndexView(FormView):  # noqa: D101
         context = super().get_context_data(**kwargs)
         context['drivers'] = Kierowca.objects.all()
         return context
+
+    def form_valid(self, form):
+        return JsonResponse({
+            'test': True
+        })
 
 
 class RobotsView(TemplateView):  # noqa: D101
