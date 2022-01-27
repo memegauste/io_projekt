@@ -75,6 +75,7 @@
 
         let staticIcon = new L.Icon({
             iconUrl: '{% static "images/marker-icon.png" %}',
+            iconAnchor: [12, 40],
         })
 
         map.on('click', (e) => {
