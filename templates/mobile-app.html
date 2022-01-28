@@ -148,7 +148,7 @@
                 success: (response) => {
                     if(response.hasOwnProperty('lat') && latLong){
                         let target = [response['lat'], response['long']];
-                        $('client-name').val(response['client_name']);
+                        $('#client-name').val(response['client_name']);
                         createRouting(latLong, target);
                     }
                     if(response['is_finished']) setTimeout(() => sendStatus(), 2500);
