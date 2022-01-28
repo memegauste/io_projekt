@@ -72,6 +72,8 @@
                 L.latLng(from[0], from[1]),
                 L.latLng(target[0], target[1])
               ],
+              draggableWaypoints: false,
+              addWaypoints: false,
               createMarker: function(i, wp, nWps){
                   if (i === 0 || i === nWps - 1) {
                       return L.marker(wp.latLng, {icon: staticIcon});
