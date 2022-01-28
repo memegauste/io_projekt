@@ -98,15 +98,17 @@
 
         const setPosition = (position) => {
             latLong = [position.coords.latitude, position.coords.longitude];
-            map.setView(latLong, 13);
             map.eachLayer((layer) => {
                 if(layer.options.hasOwnProperty('icon') && targetId !== layer._leaflet_id) map.removeLayer(layer);
             });
             if(firstRun){
+                map.setView(latLong, 13);
                 addMarker(latLong, 'Jesteś tutaj');
                 firstRun = false;
+            } else{
+                map.setView(latLong);
+                addMarker(latLong)
             }
-            else addMarker(latLong)
             setTimeout(() => getPosition(), 2500);
         }
 
