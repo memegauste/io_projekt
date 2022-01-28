@@ -44,7 +44,7 @@ def add_driver_to_state(request):
             response_data.update({
                 'lat': usluga.szerokoscGeoCelu,
                 'long': usluga.dlugoscGeoCelu,
-                'client_name': usluga.idKlienta.__str__(),
+                'client_info': usluga.idKlienta.__str__(),
             })
         state_dict[int(request.POST['driverId'])] = timezone.now()
         return JsonResponse(response_data)

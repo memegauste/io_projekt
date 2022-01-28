@@ -14,7 +14,7 @@ class Klient(models.Model):  # noqa: D101
     nrTelefonu = models.CharField(max_length=9)
 
     def __str__(self):  # noqa: D105
-        return f'{self.imieKlienta}'
+        return f'{self.imieKlienta} {self.nrTelefonu}'
 
     class Meta:
         verbose_name = 'Klient'
