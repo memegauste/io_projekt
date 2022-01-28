@@ -35,6 +35,13 @@ class SearchForDriverView(TemplateView):
 
 @csrf_exempt
 def add_driver_to_state(request):
+    try:
+        driver = Kierowca.objects.get(idKierowcy=request.POST['driverId'])
+        driver.lat = request.POST['lat']
+        driver.long = request.POST['long']
+        driver.save()
+    except (Kierowca.DoesNotExist, KeyError) as e:
+        pass
     if request.POST['driverId'] != 0:
         state_dict[int(request.POST['driverId'])] = timezone.now()
         return JsonResponse({'is_finished': True})

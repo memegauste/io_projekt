@@ -84,8 +84,8 @@
     }
 
     const setFormPos = (lat, long) => {
-      $('#id_long').val(lat);
-      $('#id_lat').val(long);
+      $('#id_lat').val(lat);
+      $('#id_long').val(long);
     }
 
     // Remove hidden input id_drivers (workaround for validation:
@@ -100,8 +100,8 @@
                     if(layer.options.hasOwnProperty('icon')) map.removeLayer(layer);
                 });
                 new L.marker(e.latlng, {icon: staticIcon}).addTo(map);
+                setFormPos(e.latlng['lat'], e.latlng['lng']);
             }
-            setFormPos(e.latlng['lat'], e.latlng['long']);
         })
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

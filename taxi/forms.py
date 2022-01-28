@@ -22,10 +22,10 @@ class DyspozytorForm(forms.Form):
         queryset=Kierowca.objects.none(),
         widget=forms.HiddenInput,
     )
-    long = forms.FloatField(
+    lat = forms.FloatField(
         widget=forms.HiddenInput,
     )
-    lat = forms.FloatField(
+    long = forms.FloatField(
         widget=forms.HiddenInput,
     )
 

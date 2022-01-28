@@ -91,8 +91,8 @@
         const sendStatus = () => {
             let data = {'driverId': {{ current_driver }}};
             if(latLong){
-                data['lat'] = latLong['lat'];
-                data['long'] = latLong['long'];
+                data['lat'] = latLong[0];
+                data['long'] = latLong[1];
             }
             $.ajax({
                 type: 'POST',
