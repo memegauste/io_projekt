@@ -1,5 +1,8 @@
 """Mainapp models file."""
+from datetime import timedelta
+
 from django.db import models
+from django.utils import timezone
 from django.utils.safestring import mark_safe
 
 from mobile.utils import state_dict
@@ -48,7 +51,11 @@ class Kierowca(models.Model):  # noqa: D101
 
     def get_status(self):
         html = '<span class="fst-italic {0}">{1}</span>'
-        if self.idKierowcy in state_dict.keys():
+        get_drivers = []
+        for key, value in state_dict.items():
+            if value > timezone.now() - timedelta(minutes=5):
+                get_drivers.append(key)
+        if self.idKierowcy in get_drivers:
             return mark_safe(html.format('text-success', 'Dostępny'))
         return mark_safe(html.format('text-danger', 'Niedostępny'))
 

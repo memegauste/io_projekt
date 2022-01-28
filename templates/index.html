@@ -79,10 +79,12 @@
         })
 
         map.on('click', (e) => {
-            map.eachLayer((layer) => {
-                if(layer.options.hasOwnProperty('icon')) map.removeLayer(layer);
-            });
-            new L.marker(e.latlng, {icon: staticIcon}).addTo(map);
+            if($('#request-add:hover').length === 0){
+                map.eachLayer((layer) => {
+                    if(layer.options.hasOwnProperty('icon')) map.removeLayer(layer);
+                });
+                new L.marker(e.latlng, {icon: staticIcon}).addTo(map);
+            }
         })
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
