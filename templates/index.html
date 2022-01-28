@@ -66,6 +66,7 @@
     <script src="{% static 'js/jquery-3.6.0.js' %}"></script>
     <script src="{% static 'js/js.cookie.js' %}"></script>
     <script src="{% static 'js/leaflet.js' %}"></script>
+    <script src="{% static 'js/utils.js' %}"></script>
   <script>
   let staticIcon = new L.Icon({
         iconUrl: '{% static "images/marker-icon.png" %}',
@@ -151,7 +152,15 @@
                     processData: false,
                     contentType: false,
                     success: (response) => {
-                        console.log(response);
+                        if(response['is_finished']){
+                            $('#menuDyspozytora').modal('hide');
+                        } else {
+                            let errorString = getErrorString(response['errors']);
+                            $("#menuDyspozytora .modal-body:first").prepend(`
+                                <div class="alert alert-z alert-danger alert-dismissible fade show text-center margin-bottom-1x">
+                                <span class="alert-close" data-dismiss="alert"></span><i class="icon-ban"></i>&nbsp;&nbsp;
+                                <strong>Uwaga:</strong>${errorString}</div>`);
+                        }
                     },
                 })
             } else e.currentTarget.reportValidity();

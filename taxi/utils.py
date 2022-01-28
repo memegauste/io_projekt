@@ -13,3 +13,20 @@ def get_sorted_driver_instances(driver_ids):
     [ordered_ids.append(id) for id in driver_ids if id not in ordered_ids]
     preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(ordered_ids)])
     return Kierowca.objects.filter(idKierowcy__in=ordered_ids).order_by(preserved)
+
+
+def build_error_dict(form):
+    """Build error dict for json response."""
+    errors = {}
+    if form.non_field_errors():
+        errors['other'] = {
+            'label': 'Inne błędy',
+            'errors': form.non_field_errors(),
+        }
+    for field in form:
+        if field.errors:
+            errors[field.name] = {
+                'label': field.label,
+                'errors': field.errors,
+            }
+    return errors

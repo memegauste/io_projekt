@@ -14,7 +14,7 @@ from taxi.forms import DyspozytorForm
 from taxi.forms import DriversForm
 from taxi.models import Kierowca
 from taxi.models import Usluga
-from taxi.utils import get_sorted_driver_instances
+from taxi.utils import get_sorted_driver_instances, build_error_dict
 
 
 class DyspozytorView(FormView):  # noqa: D101
@@ -30,14 +30,27 @@ class DyspozytorView(FormView):  # noqa: D101
             if value > timezone.now() - timedelta(minutes=getattr(settings, 'AUTOLOGOUT_MINUTES', 5)):
                 get_drivers.append(key)
         available_drivers = Kierowca.objects.filter(idKierowcy__in=get_drivers).exclude(
-            usluga__in=Usluga.objects.filter(statusRealizacji__in=[Usluga.ZAJETY]))
+            usluga__in=Usluga.objects.filter(statusRealizacji__in=[Usluga.W_TRAKCIE]))
         available_ids = list(available_drivers.values_list('idKierowcy', flat=True))
         kwargs['drivers_ids'] = available_ids
         return kwargs
 
     def form_valid(self, form):
+        """Do the stuff if form is valid."""
+        Usluga.objects.create(
+            statusRealizacji=Usluga.W_TRAKCIE,
+            idDyspozytora=form.cleaned_data['dyspozytorId'],
+            idKierowcy=form.cleaned_data['driver'],
+            dlugoscGeoCelu=form.cleaned_data['long'],
+            szerokoscGeoCelu=form.cleaned_data['lat'],
+        )
+        return JsonResponse({'is_finished': True})
+
+    def form_invalid(self, form):
+        """Return json response with errors and form status."""
         return JsonResponse({
-            'test': True,
+            'is_finished': False,
+            'errors': build_error_dict(form),
         })
 
 
@@ -69,7 +82,7 @@ def load_available_drivers(request):
         if value > timezone.now() - timedelta(minutes=getattr(settings, 'AUTOLOGOUT_MINUTES', 5)):
             get_drivers.append(key)
     available_drivers = Kierowca.objects.filter(idKierowcy__in=get_drivers).exclude(
-        usluga__in=Usluga.objects.filter(statusRealizacji__in=[Usluga.ZAJETY]))
+        usluga__in=Usluga.objects.filter(statusRealizacji__in=[Usluga.W_TRAKCIE]))
     available_ids = list(available_drivers.values_list('idKierowcy', flat=True))
     get_form = DriversForm(drivers_ids=available_ids)
     form_body = render_to_string(

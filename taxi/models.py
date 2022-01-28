@@ -66,15 +66,14 @@ class Kierowca(models.Model):  # noqa: D101
 
 class Usluga(models.Model):  # noqa: D101
 
-    DOSTEPNY = 1
-    ZAJETY = 2
-
+    idUsluga = models.IntegerField(primary_key=True)
+    W_TRAKCIE = 1
+    ZAKONCZONO = 2
     STATUSY_REALIZACJI = (
-        (DOSTEPNY, 'Dostępny'),
-        (ZAJETY, 'W trakcie'),
+        (W_TRAKCIE, 'W trakcie'),
+        (ZAKONCZONO, 'Zakonczono')
     )
     statusRealizacji = models.IntegerField(choices=STATUSY_REALIZACJI)
-    idUsluga = models.IntegerField(primary_key=True)
     idDyspozytora = models.IntegerField()
     idKierowcy = models.ForeignKey(
         Kierowca,
