@@ -79,6 +79,7 @@
               ],
               draggableWaypoints: false,
               addWaypoints: false,
+              fitSelectedRoutes: false,
               createMarker: function(i, wp, nWps){
                   if (i === 0 || i === nWps - 1) {
                       return L.marker(wp.latLng, {icon: staticIcon});
