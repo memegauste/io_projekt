@@ -10,7 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import FormView
 from django.views.generic import TemplateView
 from mobile.utils import state_dict
-from taxi.forms import ClientInputForm
+from taxi.forms import DyspozytorForm
 from taxi.forms import DriversForm
 from taxi.models import Kierowca
 from taxi.models import Usluga
@@ -20,11 +20,24 @@ from taxi.utils import get_sorted_driver_instances
 class DyspozytorView(FormView):  # noqa: D101
 
     template_name = 'index.html'
-    form_class = ClientInputForm
+    form_class = DyspozytorForm
+
+    def get_form_kwargs(self):
+        """Additional method for passing kwarts to validation."""
+        kwargs = super().get_form_kwargs()
+        get_drivers = []
+        for key, value in state_dict.items():
+            if value > timezone.now() - timedelta(minutes=getattr(settings, 'AUTOLOGOUT_MINUTES', 5)):
+                get_drivers.append(key)
+        available_drivers = Kierowca.objects.filter(idKierowcy__in=get_drivers).exclude(
+            usluga__in=Usluga.objects.filter(statusRealizacji__in=[Usluga.ZAJETY]))
+        available_ids = list(available_drivers.values_list('idKierowcy', flat=True))
+        kwargs['drivers_ids'] = available_ids
+        return kwargs
 
     def form_valid(self, form):
         return JsonResponse({
-            'test': True
+            'test': True,
         })
 
 

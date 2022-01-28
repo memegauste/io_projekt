@@ -76,6 +76,9 @@
             .bindPopup(text).openPopup();
     }
 
+    // Remove hidden input id_drivers (workaround for validation:
+    $('#id_drivers').remove();
+
     $(document).ready(() => {
         let map = L.map('map').setView([53.770, 20.490], 13);
 
