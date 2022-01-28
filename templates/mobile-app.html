@@ -17,15 +17,14 @@
 <body class="text-white bg-dark">
     <nav class="navbar navbar-light bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Taxi (Inżyneria)</a>
-    <input type="search" id="driver-search" placeholder="Określ lokalizację..." aria-label="search">
-      <button id="search-confirm" class="btn btn-outline-success btn-sm" type="submit">Dalej</button>
+    <a class="navbar-brand" href="#">TaxiApp</a>
+    <input type="search" id="driver-search" placeholder="Brak docelowego celu..." aria-label="search" disabled>
   </div>
 </nav>
     <div id="map"></div>
     <footer class="footer mt-auto py-3 bg-light">
       <div class="container">
-        <span class="text-muted" id="status-span">Brak celu...</span>
+        <span class="text-muted" id="status-span">Projekt Taxi Inżyneria oprogramowania</span>
       </div>
     </footer>
     <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
@@ -37,6 +36,9 @@
         let map = undefined;
         let firstRun = true;
         let searchTries = 0;
+        let latLong = undefined;
+        let lastMarkerId = undefined;
+        let targetId = undefined;
 
         let staticIcon = new L.Icon({
             iconUrl: '{% static "images/marker-icon.png" %}',
@@ -50,8 +52,11 @@
         }
 
         const setPosition = (position) => {
-            let latLong = [position.coords.latitude, position.coords.longitude];
+            latLong = [position.coords.latitude, position.coords.longitude];
             map.setView(latLong, 13);
+            map.eachLayer((layer) => {
+                if(layer.options.hasOwnProperty('icon') && targetId !== layer._leaflet_id) map.removeLayer(layer);
+            });
             if(firstRun){
                 addMarker(latLong, 'Jesteś tutaj');
                 firstRun = false;
@@ -84,10 +89,15 @@
         }
 
         const sendStatus = () => {
+            let data = {'driverId': {{ current_driver }}};
+            if(latLong){
+                data['lat'] = latLong['lat'];
+                data['long'] = latLong['long'];
+            }
             $.ajax({
                 type: 'POST',
                 url: '{% url "mobile:add_to_state" %}',
-                data: {'driverId': {{ current_driver }}},
+                data: data,
                 success: (response) => {
                     if(response['is_finished']) setTimeout(() => sendStatus(), 2500);
                 }

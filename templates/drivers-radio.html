@@ -2,7 +2,7 @@
 <ul id="id_drivers">
     {% for instance in drivers_form.drivers.field.queryset %}
     <li><label for="id_drivers_{{ forloop.counter0 }}">
-        <input type="radio" name="drivers" value="{{ instance.id }}"
+        <input type="radio" name="drivers" value="{{ instance.idKierowcy }}"
                required="" id="id_drivers_{{ forloop.counter0 }}">
         {{ instance }} {{ instance.get_status }}
     </label></li>

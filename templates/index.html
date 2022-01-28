@@ -74,9 +74,14 @@
         popupAnchor: [0, -24],
     })
 
-   const addMarker = (pos, text) => {
+    const addMarker = (pos, text) => {
         L.marker(pos, {icon: staticIcon}).addTo(map)
             .bindPopup(text).openPopup();
+    }
+
+    const setFormPos = (lat, long) => {
+      $('#id_long').val(lat);
+      $('#id_lat').val(long);
     }
 
     // Remove hidden input id_drivers (workaround for validation:
@@ -92,6 +97,7 @@
                 });
                 new L.marker(e.latlng, {icon: staticIcon}).addTo(map);
             }
+            setFormPos(e.latlng['lat'], e.latlng['long']);
         })
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -103,6 +109,10 @@
             map.setView(latLong, 13);
             L.marker(latLong, {icon: staticIcon}).addTo(map).bindPopup(
                 'Kontroluj pinezkę aby dodać cel dla kierowcy.').openPopup();
+            setFormPos(
+                position.coords.latitude,
+                position.coords.longitude,
+            );
         }
 
         const getPosition = (position) => {

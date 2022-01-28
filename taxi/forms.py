@@ -5,6 +5,9 @@ from taxi.utils import get_sorted_driver_instances
 
 class DyspozytorForm(forms.Form):
 
+    idDyspozytora = forms.IntegerField(
+        widget=forms.HiddenInput,
+    )
     phone = forms.CharField(
         label='Nr Telefonu',
         max_length=9,
@@ -17,6 +20,12 @@ class DyspozytorForm(forms.Form):
     )
     drivers = forms.ModelChoiceField(
         queryset=Kierowca.objects.none(),
+        widget=forms.HiddenInput,
+    )
+    long = forms.FloatField(
+        widget=forms.HiddenInput,
+    )
+    lat = forms.FloatField(
         widget=forms.HiddenInput,
     )
 
