@@ -25,7 +25,10 @@ class DyspozytorView(FormView):  # noqa: D101
 
     def get_initial(self):  # noqa: D102
         initial = super().get_initial()
-        initial['dyspozytorId'] = getattr(Dyspozytor.objects.first(), 'idDyspozytora', 0)
+        initial['dyspozytor'] = Dyspozytor.objects.first()
+        if 'dys_id' in self.kwargs:
+            initial['dyspozytor'] = Dyspozytor.objects.filter(
+                idDyspozytora=self.kwargs['dys_id'])
         return initial
 
     def get_form_kwargs(self):

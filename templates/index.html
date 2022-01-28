@@ -9,7 +9,11 @@
 </head>
 <body class="text-white bg-dark">
     <div id="top" class="text-end mx-2">
+        {% if dyspozytor %}
         <span>Zalogowano jako: dyspozytor1</span>
+        {% else %}
+        <span>Zalogowano jako {{ dyspozytor }}</span>
+        {% endif %}
     </div>
     <div class="d-flex text-center" id="main">
         <div id="map">
