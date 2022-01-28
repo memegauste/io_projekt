@@ -50,7 +50,11 @@ class Kierowca(models.Model):  # noqa: D101
         for key, value in state_dict.items():
             if value > timezone.now() - timedelta(minutes=getattr(settings, 'AUTOLOGOUT_MINUTES', 5)):
                 get_drivers.append(key)
-        if self.idKierowcy in get_drivers:
+        busy = list(Kierowca.objects.filter(usluga__in=Usluga.objects.filter(
+            statusRealizacji__in=[Usluga.W_TRAKCIE])).values_list('idKierowcy', flat=True))
+        if self.idKierowcy in busy:
+            return mark_safe(html.format('text-info', 'Zajęty'))
+        elif self.idKierowcy in get_drivers:
             return mark_safe(html.format('text-success', 'Dostępny'))
         return mark_safe(html.format('text-danger', 'Niedostępny'))
 
