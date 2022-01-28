@@ -1,0 +1,15 @@
+{% if drivers_form.drivers.field.queryset %}
+<ul id="id_drivers">
+    {% for instance in drivers_form.drivers.field.queryset %}
+    <li><label for="id_drivers_{{ forloop.counter0 }}">
+        <input type="radio" name="drivers" value="{{ instance.id }}"
+               required="" id="id_drivers_{{ forloop.counter0 }}">
+        {{ instance }} {{ instance.get_status }}
+    </label></li>
+    {% endfor %}
+</ul><p></p>
+    <table>
+</table>
+{% else %}
+<div class="mt-2 fst-italic">Brak dostępnych kierowców w sieci, spróbuj później.</div>
+{% endif %}

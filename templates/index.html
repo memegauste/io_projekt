@@ -42,6 +42,12 @@
           <div class="modal-body">
                 {{ form.as_p }}
           </div>
+          <div class="modal-body">
+                <div class="text-center">
+                    Lista kierowców do wyboru:
+                </div>
+                <div id="drivers-form"></div>
+          </div>
           <div class="modal-footer">
 <!--            <button class="btn btn-outline-secondary btn-sm" type="button" data-dismiss="modal">-->
 <!--              Zamknij-->
@@ -98,7 +104,7 @@
             $.ajax({
                 type: 'POST',
                 url: '{% url "taxi:load_drivers" %}',
-                data: {'filter': 'all'},
+                data: {},
                 success: (response) => {
                     if(response['is_finished']) $('#drivers-list').html(response['html']);
                     setTimeout(() => checkDrivers(), 2500);
@@ -108,6 +114,15 @@
         checkDrivers()
 
         $('#request-add').on('click', () => {
+            $.ajax({
+                type: 'POST',
+                url: '{% url "taxi:load_available_drivers" %}',
+                data: {},
+                success: (response) => {
+                    if(response['is_finished']) $('#drivers-form').html(response['html']);
+                    setTimeout(() => checkDrivers(), 2500);
+                }
+            })
             $('#menuDyspozytora').modal('show');
         })
 
@@ -115,7 +130,6 @@
             e.preventDefault();
             if(e.currentTarget.checkValidity()) {
                 let formData = new FormData($(e.currentTarget)[0]);
-                console.log(formData)
                 $.ajax({
                     type: 'POST',
                     headers: {
@@ -131,10 +145,6 @@
                 })
             } else e.currentTarget.reportValidity();
         })
-
-        $('#cleanForm').on('click', () => {
-            $('#mainForm')[0].reset()
-        });
     })
   </script>
 </body>
