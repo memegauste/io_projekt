@@ -38,7 +38,6 @@ class DyspozytorForm(forms.Form):
             self.fields['drivers'].queryset = drivers
 
 
-
 class DriversForm(forms.Form):
 
     drivers = forms.ModelChoiceField(

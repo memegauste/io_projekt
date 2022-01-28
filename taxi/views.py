@@ -12,7 +12,8 @@ from django.views.generic import TemplateView
 from mobile.utils import state_dict
 from taxi.forms import DyspozytorForm
 from taxi.forms import DriversForm
-from taxi.models import Kierowca, Dyspozytor
+from taxi.models import Dyspozytor
+from taxi.models import Kierowca
 from taxi.models import Usluga
 from taxi.utils import build_error_dict
 from taxi.utils import get_sorted_driver_instances

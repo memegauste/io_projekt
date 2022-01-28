@@ -1,7 +1,7 @@
 """Taxi urls file."""
 from django.urls import path
-from mobile.views import ClientMobileView, add_driver_to_state
-from mobile.views import SearchForDriverView
+from mobile.views import add_driver_to_state
+from mobile.views import ClientMobileView
 
 app_name = 'mobile'
 
