@@ -1,6 +1,6 @@
 """Mainapp models file."""
 from datetime import timedelta
-
+from django.conf import settings
 from django.db import models
 from django.utils import timezone
 from django.utils.safestring import mark_safe
@@ -53,7 +53,7 @@ class Kierowca(models.Model):  # noqa: D101
         html = '<span class="fst-italic {0}">{1}</span>'
         get_drivers = []
         for key, value in state_dict.items():
-            if value > timezone.now() - timedelta(minutes=5):
+            if value > timezone.now() - timedelta(minutes=getattr(settings, 'AUTOLOGOUT_MINUTES', 5)):
                 get_drivers.append(key)
         if self.idKierowcy in get_drivers:
             return mark_safe(html.format('text-success', 'Dostępny'))
