@@ -68,7 +68,7 @@
 
         const createRouting = (from, target) => {
             map.eachLayer((layer) => {
-              if (layer.options.waypoints && layer.options.waypoints.length) {
+              if (layer.options.hasOwnProperty('addWaypoints')) {
                 map.removeLayer(layer);
               }
             });
