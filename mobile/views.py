@@ -11,7 +11,7 @@ from django.views.generic import TemplateView
 
 # Set temporary memory variable.
 from mobile.utils import state_dict
-from taxi.models import Kierowca
+from taxi.models import Kierowca, Usluga
 
 
 class ClientMobileView(FormView):
@@ -35,14 +35,16 @@ class SearchForDriverView(TemplateView):
 
 @csrf_exempt
 def add_driver_to_state(request):
-    try:
-        driver = Kierowca.objects.get(idKierowcy=request.POST['driverId'])
-        driver.lat = request.POST['lat']
-        driver.long = request.POST['long']
-        driver.save()
-    except (Kierowca.DoesNotExist, KeyError) as e:
-        pass
     if request.POST['driverId'] != 0:
+        response_data = {'is_finished': True}
+        usluga = Usluga.objects.filter(
+            statusRealizacji=Usluga.W_TRAKCIE,
+            idKierowcy=request.POST['driverId']).last()
+        if usluga:
+            response_data.update({
+                'lat': usluga.szerokoscGeoCelu,
+                'long': usluga.dlugoscGeoCelu,
+            })
         state_dict[int(request.POST['driverId'])] = timezone.now()
-        return JsonResponse({'is_finished': True})
+        return JsonResponse(response_data)
     return JsonResponse({'is_finished': False})

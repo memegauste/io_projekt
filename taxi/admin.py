@@ -15,8 +15,6 @@ class KlientAdmin(admin.ModelAdmin):  # noqa: D101
         'idKlienta',
         'imieKlienta',
         'nrTelefonu',
-        'dlugoscGeoKlienta',
-        'szerokoscGeoKlienta',
     ]
 
 
@@ -37,8 +35,6 @@ class KierowcaAdmin(admin.ModelAdmin):  # noqa: D101
         'idKierowcy',
         'imieKierowcy',
         'nazwiskoKierowcy',
-        'dlugoscGeoKierowcy',
-        'szerokoscGeoKierowcy',
     ]
 
 

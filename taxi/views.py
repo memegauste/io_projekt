@@ -12,7 +12,7 @@ from django.views.generic import TemplateView
 from mobile.utils import state_dict
 from taxi.forms import DyspozytorForm
 from taxi.forms import DriversForm
-from taxi.models import Dyspozytor
+from taxi.models import Dyspozytor, Klient
 from taxi.models import Kierowca
 from taxi.models import Usluga
 from taxi.utils import build_error_dict
@@ -57,8 +57,13 @@ class DyspozytorView(FormView):  # noqa: D101
 
     def form_valid(self, form):
         """Do the stuff if form is valid."""
+        klient = Klient.objects.create(
+            imieKlienta=form.cleaned_data['imieKlienta'],
+            nrTelefonu=form.cleaned_data['nrTelefonu'],
+        )
         Usluga.objects.create(
             statusRealizacji=Usluga.W_TRAKCIE,
+            idKlienta=klient,
             idDyspozytora=form.cleaned_data['idDyspozytora'],
             idKierowcy=form.cleaned_data['kierowcy'],
             dlugoscGeoCelu=form.cleaned_data['long'],

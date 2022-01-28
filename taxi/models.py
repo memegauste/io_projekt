@@ -9,11 +9,9 @@ from mobile.utils import state_dict
 
 class Klient(models.Model):  # noqa: D101
 
-    idKlienta = models.IntegerField(primary_key=True)
+    idKlienta = models.AutoField(primary_key=True)
     imieKlienta = models.CharField(max_length=50)
     nrTelefonu = models.CharField(max_length=9)
-    dlugoscGeoKlienta = models.FloatField()
-    szerokoscGeoKlienta = models.FloatField()
 
     def __str__(self):  # noqa: D105
         return f'{self.imieKlienta}'
@@ -25,7 +23,7 @@ class Klient(models.Model):  # noqa: D101
 
 class Dyspozytor(models.Model):  # noqa: D101
 
-    idDyspozytora = models.IntegerField(primary_key=True)
+    idDyspozytora = models.AutoField(primary_key=True)
     imieDyspozytora = models.CharField(max_length=50)
     nazwiskoDyspozytora = models.CharField(max_length=50)
 
@@ -39,11 +37,9 @@ class Dyspozytor(models.Model):  # noqa: D101
 
 class Kierowca(models.Model):  # noqa: D101
 
-    idKierowcy = models.IntegerField(primary_key=True)
+    idKierowcy = models.AutoField(primary_key=True)
     imieKierowcy = models.CharField(max_length=50)
     nazwiskoKierowcy = models.CharField(max_length=50)
-    dlugoscGeoKierowcy = models.FloatField()
-    szerokoscGeoKierowcy = models.FloatField()
 
     def __str__(self):  # noqa: D105
         return f'{self.imieKierowcy} {self.nazwiskoKierowcy}'
@@ -65,7 +61,7 @@ class Kierowca(models.Model):  # noqa: D101
 
 class Usluga(models.Model):  # noqa: D101
 
-    idUsluga = models.IntegerField(primary_key=True)
+    idUsluga = models.AutoField(primary_key=True)
     W_TRAKCIE = 1
     ZAKONCZONO = 2
     STATUSY_REALIZACJI = (
@@ -86,8 +82,14 @@ class Usluga(models.Model):  # noqa: D101
         Klient,
         on_delete=models.CASCADE,
     )
-    dlugoscGeoCelu = models.FloatField()
+    szerokoscGeoKlienta = models.FloatField(
+        null=True, blank=True,
+    )
+    dlugoscGeoKlienta = models.FloatField(
+        null=True, blank=True,
+    )
     szerokoscGeoCelu = models.FloatField()
+    dlugoscGeoCelu = models.FloatField()
 
     def __str__(self):  # noqa: D105
         return f'Usługa o id {self.idUsluga}'

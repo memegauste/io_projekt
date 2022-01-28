@@ -9,7 +9,11 @@ class DyspozytorForm(forms.Form):
         queryset=Dyspozytor.objects.all(),
         widget=forms.HiddenInput,
     )
-    numer = forms.CharField(
+    imieKlienta = forms.CharField(
+        label='Imie klienta',
+        max_length=50,
+    )
+    nrTelefonu = forms.CharField(
         label='Nr Telefonu',
         max_length=9,
         # widget=forms.TextInput(attrs={'class': 'form-control'}),

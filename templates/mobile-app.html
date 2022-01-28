@@ -66,6 +66,23 @@
             popupAnchor: [0, -24],
         })
 
+        const createRouting = (from, target) => {
+            L.Routing.control({
+              waypoints: [
+                L.latLng(from[0], from[1]),
+                L.latLng(target[0], target[1])
+              ],
+              createMarker: function(i, wp, nWps){
+                  if (i === 0 || i === nWps - 1) {
+                      return L.marker(wp.latLng, {icon: staticIcon});
+                  } else {
+                      return L.marker(wp.latLng, {icon: staticIcon});
+                  }
+              }
+            }).addTo(map);
+            $('.leaflet-routing-container').hide();
+        }
+
         const addMarker = (pos, text) => {
             let marker = L.marker(pos, {icon: staticIcon}).addTo(map);
             if(typeof text !== 'undefined') marker.bindPopup(text).openPopup()
@@ -73,7 +90,7 @@
 
         const setPosition = (position) => {
             latLong = [position.coords.latitude, position.coords.longitude];
-            map.setView(latLong);
+            map.setView(latLong, 13);
             map.eachLayer((layer) => {
                 if(layer.options.hasOwnProperty('icon') && targetId !== layer._leaflet_id) map.removeLayer(layer);
             });
@@ -85,7 +102,7 @@
             setTimeout(() => getPosition(), 2500);
         }
 
-        const getPosition = (position) => {
+        const getPosition = () => {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(setPosition);
             }
@@ -119,6 +136,10 @@
                 url: '{% url "mobile:add_to_state" %}',
                 data: data,
                 success: (response) => {
+                    if(response.hasOwnProperty('lat') && latLong){
+                        let target = [response['lat'], response['long']];
+                        createRouting(latLong, target);
+                    }
                     if(response['is_finished']) setTimeout(() => sendStatus(), 2500);
                 }
             })
@@ -128,20 +149,6 @@
         $(document).ready(() => {
             let defaultPos = [42.770, 20.490] // default position for Olsztyn city.
             map = L.map('map').setView(defaultPos);
-            L.Routing.control({
-              waypoints: [
-                L.latLng(53.77370945103288, 20.477190825235354),
-                L.latLng(53.74444422862744, 20.455743130722073)
-              ],
-              createMarker: function(i, wp, nWps){
-                  if (i === 0 || i === nWps - 1) {
-                      return L.marker(wp.latLng, {icon: staticIcon });
-                  } else {
-                      return L.marker(wp.latLng, {icon: staticIcon });
-                  }
-              }
-            }).addTo(map);
-            $('.leaflet-routing-container').hide();
             getPosition();
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
