@@ -38,11 +38,13 @@
         let firstRun = true;
         let searchTries = 0;
 
-        const addMarker = (pos, text) => {
-            let staticIcon = new L.Icon({
-                iconUrl: '{% static "images/marker-icon.png" %}',
-            })
+        let staticIcon = new L.Icon({
+            iconUrl: '{% static "images/marker-icon.png" %}',
+            iconAnchor: [12, 40],
+            popupAnchor: [0, -24],
+        })
 
+        const addMarker = (pos, text) => {
             let marker = L.marker(pos, {icon: staticIcon}).addTo(map);
             if(typeof text !== 'undefined') marker.bindPopup(text).openPopup()
         }
@@ -92,11 +94,6 @@
             })
         }
         sendStatus()
-
-        let staticIcon = new L.Icon({
-            iconUrl: '{% static "images/marker-icon.png" %}',
-            iconAnchor: [12, 40],
-        })
 
         $(document).ready(() => {
             let defaultPos = [42.770, 20.490] // default position for Olsztyn city.
