@@ -97,8 +97,19 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        L.marker([53.770, 20.490], {icon: staticIcon}).addTo(map)
-            .bindPopup('Twoja lokalizacja jako dyspozytora - możesz to spokojnie zamknąć.').openPopup();
+        const setPosition = (position) => {
+            let latLong = [position.coords.latitude, position.coords.longitude];
+            map.setView(latLong, 13);
+            L.marker(latLong, {icon: staticIcon}).addTo(map).bindPopup(
+                'Kontroluj pinezkę aby dodać cel dla kierowcy.').openPopup();
+        }
+
+        const getPosition = (position) => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(setPosition);
+            }
+        }
+        getPosition();
 
         const checkDrivers = () => {
             $.ajax({
