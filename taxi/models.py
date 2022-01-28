@@ -73,7 +73,10 @@ class Usluga(models.Model):  # noqa: D101
         (ZAKONCZONO, 'Zakonczono')
     )
     statusRealizacji = models.IntegerField(choices=STATUSY_REALIZACJI)
-    idDyspozytora = models.IntegerField()
+    idDyspozytora = models.ForeignKey(
+        Dyspozytor,
+        on_delete=models.CASCADE,
+    )
     idKierowcy = models.ForeignKey(
         Kierowca,
         on_delete=models.CASCADE,
