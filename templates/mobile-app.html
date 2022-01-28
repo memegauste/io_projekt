@@ -67,6 +67,11 @@
         })
 
         const createRouting = (from, target) => {
+            map.eachLayer((layer) => {
+              if (layer.options.waypoints && layer.options.waypoints.length) {
+                map.removeLayer(layer);
+              }
+            });
             L.Routing.control({
               waypoints: [
                 L.latLng(from[0], from[1]),
