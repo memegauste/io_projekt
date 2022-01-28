@@ -1,24 +1,25 @@
 from django import forms
-from taxi.models import Kierowca
+from taxi.models import Kierowca, Dyspozytor
 from taxi.utils import get_sorted_driver_instances
 
 
 class DyspozytorForm(forms.Form):
 
-    idDyspozytora = forms.IntegerField(
+    idDyspozytora = forms.ModelChoiceField(
+        queryset=Dyspozytor.objects.all(),
         widget=forms.HiddenInput,
     )
-    phone = forms.CharField(
+    numer = forms.CharField(
         label='Nr Telefonu',
         max_length=9,
         # widget=forms.TextInput(attrs={'class': 'form-control'}),
     )
-    address = forms.CharField(
+    adres = forms.CharField(
         label='Adres',
         max_length=50,
         # widget=forms.TextInput(attrs={'class': 'form-control'}),
     )
-    drivers = forms.ModelChoiceField(
+    kierowcy = forms.ModelChoiceField(
         queryset=Kierowca.objects.none(),
         widget=forms.HiddenInput,
     )
@@ -35,12 +36,12 @@ class DyspozytorForm(forms.Form):
         super().__init__(*args, **kwargs)
         if drivers_ids:
             drivers = get_sorted_driver_instances(drivers_ids)
-            self.fields['drivers'].queryset = drivers
+            self.fields['kierowcy'].queryset = drivers
 
 
 class DriversForm(forms.Form):
 
-    drivers = forms.ModelChoiceField(
+    kierowcy = forms.ModelChoiceField(
         queryset=Kierowca.objects.none(),
         widget=forms.RadioSelect,
     )
@@ -50,4 +51,4 @@ class DriversForm(forms.Form):
         super().__init__(*args, **kwargs)
         if drivers_ids:
             drivers = get_sorted_driver_instances(drivers_ids)
-            self.fields['drivers'].queryset = drivers
+            self.fields['kierowcy'].queryset = drivers

@@ -27,6 +27,26 @@
         <span class="text-muted" id="status-span">Projekt Taxi Inżyneria oprogramowania</span>
       </div>
     </footer>
+    <div class="modal fade text-black" id="infoTaxi" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <form id="taxiForm" action="{% url 'taxi:index' %}">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Nowe zlecenie</h4>
+          </div>
+          <div class="modal-body">
+                {{ form.as_p }}
+          </div>
+          <div class="modal-footer">
+            <button
+                    class="btn btn-outline-secondary btn-sm" type="submit" data-dismiss="modal">
+              Zatwierdź
+            </button>
+          </div>
+        </div>
+            </form>
+      </div>
+        </div>
     <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
     <script src="{% static 'js/jquery-3.6.0.js' %}"></script>
     <script src="{% static 'js/js.cookie.js' %}"></script>
@@ -53,7 +73,7 @@
 
         const setPosition = (position) => {
             latLong = [position.coords.latitude, position.coords.longitude];
-            map.setView(latLong, 13);
+            map.setView(latLong);
             map.eachLayer((layer) => {
                 if(layer.options.hasOwnProperty('icon') && targetId !== layer._leaflet_id) map.removeLayer(layer);
             });
@@ -107,7 +127,7 @@
 
         $(document).ready(() => {
             let defaultPos = [42.770, 20.490] // default position for Olsztyn city.
-            map = L.map('map').setView(defaultPos, 13);
+            map = L.map('map').setView(defaultPos);
             L.Routing.control({
               waypoints: [
                 L.latLng(53.77370945103288, 20.477190825235354),
@@ -139,6 +159,8 @@
                     },
                 })
             });
+
+            $('#infoTaxi').modal('show');
         });
     </script>
 </body>

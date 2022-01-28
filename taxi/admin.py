@@ -2,8 +2,10 @@
 
 # Register your models here.
 from django.contrib import admin
-
-from taxi.models import Dyspozytor, Kierowca, Klient, Usluga
+from taxi.models import Dyspozytor
+from taxi.models import Kierowca
+from taxi.models import Klient
+from taxi.models import Usluga
 
 
 @admin.register(Klient)

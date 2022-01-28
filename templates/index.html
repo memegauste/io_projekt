@@ -10,9 +10,9 @@
 <body class="text-white bg-dark">
     <div id="top" class="text-end mx-2">
         {% if dyspozytor %}
-        <span>Zalogowano jako: dyspozytor1</span>
+            <span>Zalogowano jako: {{ dyspozytor }}</span>
         {% else %}
-        <span>Zalogowano jako {{ dyspozytor }}</span>
+            <span>Zalogowano jako: anonimowy dyspozytor</span>
         {% endif %}
     </div>
     <div class="d-flex text-center" id="main">
@@ -53,9 +53,6 @@
                 <div id="drivers-form"></div>
           </div>
           <div class="modal-footer">
-<!--            <button class="btn btn-outline-secondary btn-sm" type="button" data-dismiss="modal">-->
-<!--              Zamknij-->
-<!--            </button>-->
             <button
                     class="btn btn-outline-secondary btn-sm" type="submit" data-dismiss="modal">
               Zatwierdź
@@ -110,7 +107,7 @@
 
         const setPosition = (position) => {
             let latLong = [position.coords.latitude, position.coords.longitude];
-            map.setView(latLong, 13);
+            map.setView(latLong);
             L.marker(latLong, {icon: staticIcon}).addTo(map).bindPopup(
                 'Kontroluj pinezkę aby dodać cel dla kierowcy.').openPopup();
             setFormPos(

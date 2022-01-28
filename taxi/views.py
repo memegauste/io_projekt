@@ -26,11 +26,21 @@ class DyspozytorView(FormView):  # noqa: D101
 
     def get_initial(self):  # noqa: D102
         initial = super().get_initial()
-        initial['dyspozytor'] = Dyspozytor.objects.first()
+        dyspozytor = Dyspozytor.objects.first()
         if 'dys_id' in self.kwargs:
-            initial['dyspozytor'] = Dyspozytor.objects.filter(
-                idDyspozytora=self.kwargs['dys_id'])
+            dyspozytor = Dyspozytor.objects.filter(
+                idDyspozytora=self.kwargs['dys_id']).first()
+        initial['idDyspozytora'] = getattr(
+            dyspozytor, 'idDyspozytora', None)
         return initial
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['dyspozytor'] = Dyspozytor.objects.first()
+        if 'dys_id' in self.kwargs:
+            context['dyspozytor'] = Dyspozytor.objects.filter(
+                idDyspozytora=self.kwargs['dys_id']).first()
+        return context
 
     def get_form_kwargs(self):
         """Additional method for passing kwarts to validation."""
@@ -49,8 +59,8 @@ class DyspozytorView(FormView):  # noqa: D101
         """Do the stuff if form is valid."""
         Usluga.objects.create(
             statusRealizacji=Usluga.W_TRAKCIE,
-            idDyspozytora=form.cleaned_data['dyspozytorId'],
-            idKierowcy=form.cleaned_data['driver'],
+            idDyspozytora=form.cleaned_data['idDyspozytora'],
+            idKierowcy=form.cleaned_data['kierowcy'],
             dlugoscGeoCelu=form.cleaned_data['long'],
             szerokoscGeoCelu=form.cleaned_data['lat'],
         )
