@@ -27,9 +27,9 @@ class DyspozytorView(FormView):  # noqa: D101
     def get_initial(self):  # noqa: D102
         initial = super().get_initial()
         dyspozytor = Dyspozytor.objects.first()
-        if 'dys_id' in self.kwargs:
+        if 'pk' in self.kwargs:
             dyspozytor = Dyspozytor.objects.filter(
-                idDyspozytora=self.kwargs['dys_id']).first()
+                idDyspozytora=self.kwargs['pk']).first()
         initial['idDyspozytora'] = getattr(
             dyspozytor, 'idDyspozytora', None)
         return initial
@@ -37,9 +37,9 @@ class DyspozytorView(FormView):  # noqa: D101
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['dyspozytor'] = Dyspozytor.objects.first()
-        if 'dys_id' in self.kwargs:
+        if 'pk' in self.kwargs:
             context['dyspozytor'] = Dyspozytor.objects.filter(
-                idDyspozytora=self.kwargs['dys_id']).first()
+                idDyspozytora=self.kwargs['pk']).first()
         return context
 
     def get_form_kwargs(self):
@@ -81,7 +81,7 @@ class DyspozytorView(FormView):  # noqa: D101
 
 class RobotsView(TemplateView):  # noqa: D101
 
-    template = 'robots.txt'
+    template_name = 'robots.txt'
     content_type = 'text/plain'
 
 

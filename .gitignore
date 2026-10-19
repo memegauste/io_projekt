@@ -8,3 +8,11 @@ ftp/
 apps_static/
 imports/
 logs/
+.venv/
+.venv-*/
+.pytest_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.DS_Store

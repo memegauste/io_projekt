@@ -1,0 +1,4 @@
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "project.settings_test"
+testpaths = ["tests"]
+addopts = "--strict-markers"

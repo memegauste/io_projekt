@@ -50,7 +50,7 @@ class DriversForm(forms.Form):
         widget=forms.RadioSelect,
     )
 
-    def __init__(self, drivers_ids=[], *args, **kwargs):
+    def __init__(self, drivers_ids=None, *args, **kwargs):
         """Drivers Form init method."""
         super().__init__(*args, **kwargs)
         if drivers_ids:

@@ -6,6 +6,8 @@ from taxi.models import Kierowca
 
 def get_sorted_driver_instances(driver_ids):
     """Get sorted driver instances by status."""
+    if not driver_ids:
+        return Kierowca.objects.none()
     ordered_ids = []
     for id in driver_ids:
         if id in state_dict.keys():
